@@ -9,43 +9,30 @@ var router = express.Router();
 var db = require('../config/db');
 var auth = require('../auth/authentication');
 
-var mijnObject = {
-    message: 'Hello World Versie Twee!',
-};
-
-// Deze route is de 'preprocessor'.
-// Hier gaan we later bv. testen of de gebruiker
-// ingelogd is.
-// next() zorgt ervoor dat we 'doorvallen' naar de volgende URL.
-router.get('*', function(req, res, next){
-    // console.log('aangeroepen.');
-    next();
-});
-
 router.post('/login', function(req, res){
     var username = req.body.username;
     var password = req.body.password;
+    var dbemail;
 
-    if(username == "prog4" && password == "geheim"){
-        var token = auth.encodeToken(username);
-        res.contentType('application/json');
-        res.status(200);
-        res.json({
-            token: token
-        });}
-    else {res.contentType('application/json');
-        res.status(401);
-        res.json({
-            error: 'ongeldige username of password.'})
-
+    if(username != '' || password != ''){
+        db.query("SELECT COUNT(*) AS count FROM customer WHERE email = '" + username + "' AND password = '" + password + "'", function (error, result) {
+            if (error) {
+                res.status(400).json(error);
+            } else {
+                if(result[0].count >= 1){
+                    var token = auth.encodeToken(username);
+                    res.status(200).json({
+                        "token": token
+                    });
+                }
+                else {
+                    res.status(401).json({
+                        "error": "verkeerde gegevens"
+                    })
+                }
+            }
+        })
     }
 });
 
-router.get('/goodbye', function(req, res){
-    res.contentType('application/json');
-    res.status(200);
-    res.json({ 'tekst': 'Goodbye Versie 2!'});
-});
-
-// Hiermee maken we onze router zichtbaar voor andere bestanden.
 module.exports = router;
