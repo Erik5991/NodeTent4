@@ -17,9 +17,8 @@ routes.get('/rentals/:id', function(req, res) {
     });
 });
 
-module.exports = routes;
 
-/*
+
 routes.get('/rental/:id:invID', function(req, res) {
 
     var rentalID = req.params.id;
@@ -35,4 +34,5 @@ routes.get('/rental/:id:invID', function(req, res) {
         };
     });
 });
-*/
+
+module.exports = routes;
