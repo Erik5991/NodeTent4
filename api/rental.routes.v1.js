@@ -19,14 +19,20 @@ routes.get('/rentals/:id', function(req, res) {
 
 
 
-routes.get('/rentals/:id/:invID', function(req, res) {
+routes.post('/rentals/:id/:invID', function(req, res) {
 
-    var rentalID = req.params.id;
-    var inventoryID = req.params.invID;
+    var rentals = req.body;
+    var query = {
+        sql: 'INSERT INTO `rentals`(`rental_id`, `inventory_id`) VALUES (?, ?)',
+        values: [rentals.rental_id, rentals.inventory_id],
+        timeout: 2000 // 2secs
+    };
+
+    console.dir(todos);
+    console.log('Onze query: ' + query.sql);
 
     res.contentType('application/json');
-
-    db.query('SELECT * FROM rental WHERE rental_id =? AND inventory_id=?', [ rentalID, inventoryID], function(error, rows, fields) {
+    db.query(query, function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
@@ -34,5 +40,7 @@ routes.get('/rentals/:id/:invID', function(req, res) {
         };
     });
 });
+
+
 
 module.exports = routes;
