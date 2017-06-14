@@ -19,7 +19,7 @@ routes.get('/rentals/:id', function(req, res) {
 
 
 
-routes.get('/rental/:id/:invID', function(req, res) {
+routes.get('/rentals/:id/:invID', function(req, res) {
 
     var rentalID = req.params.id;
     var inventoryID = req.params.invID;
