@@ -2,7 +2,7 @@ var express = require('express');
 var routes = express.Router();
 var db = require('../config/db');
 
-routes.get('/rental/:id', function(req, res) {
+routes.get('/rentals/:id', function(req, res) {
 
     var rentalID = req.params.id;
 
