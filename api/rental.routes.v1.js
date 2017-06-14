@@ -24,7 +24,7 @@ routes.post('/rentals/insert', function(req, res) {
     var rentals = req.body;
     var inventory = req.body;
     var query = {
-        sql: 'INSERT INTO `rentals`(`rental_id`, `inventory_id`) VALUES (?, ?)',
+        sql: 'INSERT INTO `rental`(`rental_id`, `inventory_id`) VALUES (?, ?)',
         values: [rentals.rental_id, inventory.inventory_id],
         timeout: 2000 // 2secs
     };
