@@ -17,6 +17,8 @@ routes.get('/rental/:id', function(req, res) {
     });
 });
 
+module.exports = routes;
+
 /*
 routes.get('/rental/:id:invID', function(req, res) {
 
@@ -34,4 +36,3 @@ routes.get('/rental/:id:invID', function(req, res) {
     });
 });
 
-module.exports = routes;
