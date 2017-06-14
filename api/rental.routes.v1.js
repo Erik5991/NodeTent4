@@ -19,16 +19,17 @@ routes.get('/rentals/:id', function(req, res) {
 
 
 
-routes.post('/rentals/:id/:invID', function(req, res) {
+routes.post('/rentals/insert', function(req, res) {
 
     var rentals = req.body;
+    var inventory = req.body;
     var query = {
         sql: 'INSERT INTO `rentals`(`rental_id`, `inventory_id`) VALUES (?, ?)',
-        values: [rentals.rental_id, rentals.inventory_id],
+        values: [rentals.rental_id, inventory.inventory_id],
         timeout: 2000 // 2secs
     };
 
-    console.dir(todos);
+
     console.log('Onze query: ' + query.sql);
 
     res.contentType('application/json');
