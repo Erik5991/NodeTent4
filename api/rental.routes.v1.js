@@ -21,8 +21,8 @@ routes.get('/rentals/:id', function(req, res) {
 
 routes.post('/rentals/insert', function(req, res) {
 
-    var customer_id = req.body;
-    var inventory = req.body;
+    var customer_id = req.body.customer_id;
+    var inventory = req.body.inventory_id;
     var query = {
         sql: 'INSERT INTO `rental`(`custumor_id`, `inventory_id`) VALUES (?, ?)',
         values: [customer_id.customer_id, inventory.inventory_id],
