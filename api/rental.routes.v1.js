@@ -26,7 +26,7 @@ routes.get('/rental/:id/:invID', function(req, res) {
 
     res.contentType('application/json');
 
-    db.query('SELECT * FROM rental WHERE rental_id =? AND inventory_id=?', [ rentalIDs, inventoryID], function(error, rows, fields) {
+    db.query('SELECT * FROM rental WHERE rental_id =? AND inventory_id=?', [ rentalID, inventoryID], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
