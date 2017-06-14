@@ -8,6 +8,7 @@ var logger = require('morgan');
 var db = require('./config/db');
 var filmroutes_v1 = require('./api/film.routes.v1');
 var auth_routes_v1 = require('./api/authentication.routes.v1');
+var rental_routes_v1 = require('./api/rental.routes.v1');
 var config = require('./config/config');
 var expressJWT = require('express-jwt');
 

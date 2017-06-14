@@ -8,10 +8,14 @@ var db = require('../config/db');
 //
 // Geef een lijst van alle todos. Dat kunnen er veel zijn.
 //
-routes.get('/todos', function(req, res) {
+
+routes.get('/films/:id', function(req, res) {
+
+    var filmID = req.params.id;
+
     res.contentType('application/json');
 
-    db.query('SELECT * FROM todos', function(error, rows, fields) {
+    db.query('SELECT * FROM film WHERE film_id =?', [ filmID ], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {

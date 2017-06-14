@@ -3,5 +3,5 @@
     "dbHost": "146.185.130.82",
     "dbUser": "1045",
     "dbDatabase": "1045",
-    "secretkey": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTc1MjQ2MDIsImlhdCI6MTQ5NzM1MTgwMiwic3ViIjoicHJvZzQifQ.DKZocsi6j3pnZyE_CkPJXve3mdraNT5KstGaiADoAuI"
+    "secretkey": "secret"
 }
