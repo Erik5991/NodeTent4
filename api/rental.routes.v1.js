@@ -35,4 +35,4 @@ routes.get('/rental/:id:invID', function(req, res) {
         };
     });
 });
-
+*/
