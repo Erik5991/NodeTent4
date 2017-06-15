@@ -1,13 +1,8 @@
-//
-// ./api/todo.routes.v1.js
-//
 var express = require('express');
 var routes = express.Router();
 var db = require('../config/db');
 
-//
-// Geef een lijst van alle todos. Dat kunnen er veel zijn.
-//
+
 
 routes.get('/films/:id', function(req, res) {
 
