@@ -17,7 +17,7 @@ routes.get('/rentals/:id', function(req, res) {
     });
 });
 
-routes.post('/rentals/insertt', function(req, res) {
+routes.post('/rentals/insert', function(req, res) {
 
 
     var query = {
@@ -38,18 +38,37 @@ routes.post('/rentals/insertt', function(req, res) {
     });
 });
 
-routes.post('/rentals/insert', function(req, res) {
+routes.put('/rentals/change/:id/:invID', function(req, res) {
 
-    var customer_id = req.body.customer_id;
-    var inventory = req.body.inventory_id;
-    var date = req.body.rental_date;
-
-    
-
-
-
+    var todos = req.body;
+    var customerId = req.params.id;
+    var inventoryId = req.params.invID;
     var query = {
-        sql: "INSERT INTO `rental`( rental_date, `customer_id`, `inventory_id`, ) VALUES ( CURRENT_TIMESTAMP,'" + customer_id + "' ,'" + inventory + "'  )",
+        sql: "UPDATE `rental`  ()",
+        values: [todos.Title, todos.Beschrijving, ID],
+        timeout: 2000 // 2secs
+    };
+
+    console.dir(todos);
+    console.log('Onze query: ' + query.sql);
+
+    res.contentType('application/json');
+    db.query(query, function(error, rows, fields) {
+        if (error) {
+            res.status(401).json(error);
+        } else {
+            res.status(200).json({ result: rows });
+        };
+    });
+});
+
+
+routes.delete('/rentals/delete/:id', function(req, res) {
+
+    var ID = req.params.id;
+    var query = {
+        sql: 'DELETE FROM `rental` WHERE inventory_id=?',
+        values: [ID],
         timeout: 2000 // 2secs
     };
 
