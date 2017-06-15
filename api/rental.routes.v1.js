@@ -2,69 +2,66 @@ var express = require('express');
 var routes = express.Router();
 var db = require('../config/db');
 
-routes.get('/rentals/:id', function(req, res) {
+//Geeft alle rentals terug van de user
 
-    var rentalID = req.params.id;
+routes.get('/rentals/:userid', function(req, res) {
+    var userID = req.params.userid;
 
-    res.contentType('application/json');
-
-    db.query('SELECT * FROM rental WHERE rental_id =?', [ rentalID ], function(error, rows, fields) {
+    db.query('SELECT * FROM rental WHERE customer_id =?', [ userID ], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
-        };
+            res.status(200).json(rows);
+        }
     });
 });
 
-routes.post('/rentals/insertt', function(req, res) {
+//Maakt een nieuwe rental aan voor de user van de meegegeven inventory id
 
-
-    var query = {
-        sql: 'INSERT INTO `rental` (`rental_id`, `rental_date`, `inventory_id`, `customer_id`, `return_date`) VALUES (NULL, CURRENT_TIMESTAMP, 2, 2, NULL)',
-
-        timeout: 2000 // 2secs
-    };
-
-    console.log('Onze query: ' + query.sql);
+routes.post('/rentals/:userid/:inventoryid', function(req, res) {
+    var userID = req.params.userid;
+    var inventoryID = req.params.inventoryid;
 
     res.contentType('application/json');
-    db.query(query, function(error, rows, fields) {
+    db.query('INSERT INTO `rental` (`rental_id`, `rental_date`, `inventory_id`, `customer_id`, `return_date`) VALUES (NULL, CURRENT_TIMESTAMP, ' + inventoryID +  ', ' + userID +  ', NULL)', function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
-        };
+            res.status(200).json(rows);
+        }
     });
 });
 
-routes.post('/rentals/insert', function(req, res) {
+//Past de rental aan van de mmegegeven user en inventory id. De rental wordt hiermee gestopt, de return_date wordt op CURRENT_TIMESTAMP gezet.
 
-    var customer_id = req.body.customer_id;
-    var inventory = req.body.inventory_id;
-    var date = req.body.rental_date;
-
-    
-
-
-
-    var query = {
-        sql: "INSERT INTO `rental`( rental_date, `customer_id`, `inventory_id`, ) VALUES ( CURRENT_TIMESTAMP,'" + customer_id + "' ,'" + inventory + "'  )",
-        timeout: 2000 // 2secs
-    };
-
-    console.log('Onze query: ' + query.sql);
+routes.put('/rentals/:userid/:inventoryid', function(req, res) {
+    var customerId = req.params.userid;
+    var inventoryId = req.params.inventoryid;
 
     res.contentType('application/json');
-    db.query(query, function(error, rows, fields) {
+    db.query('UPDATE rental SET return_date = CURRENT_TIMESTAMP WHERE customer_id = ' + customerId +' AND inventory_id = ' + inventoryId, function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
-        };
+            res.status(200).json(rows);
+        }
     });
 });
 
+//Een rental wordt volledig verwijderd van de meegegeven user en inventory id.
 
+routes.delete('/rentals/:userid/:inventoryid', function(req, res) {
+    var customerId = req.params.userid;
+    var inventoryId = req.params.inventoryid;
+
+    res.contentType('application/json');
+    db.query('DELETE FROM rental WHERE customer_id = ' + customerId +' AND inventory_id = ' + inventoryId, function(error, rows, fields) {
+        if (error) {
+            res.status(401).json(error);
+        } else {
+            res.status(200).json(rows);
+        }
+    });
+});
 
 module.exports = routes;

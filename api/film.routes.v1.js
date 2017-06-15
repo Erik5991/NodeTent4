@@ -2,124 +2,34 @@ var express = require('express');
 var routes = express.Router();
 var db = require('../config/db');
 
-
-
 routes.get('/films/:id', function(req, res) {
-
     var filmID = req.params.id;
 
-    res.contentType('application/json');
+    //Geeft de informatie van de film door en geeft alle alle inventory id's mee van de films de versies die nog niet uit zijn geleend
 
-    db.query('SELECT * FROM film WHERE film_id =?', [ filmID ], function(error, rows, fields) {
+    db.query('SELECT inventory.inventory_id, film.title, film.description, film.release_year, film.rental_duration, film.rental_rate, film.length, film.replacement_cost, film.rating, film.special_features FROM film INNER JOIN inventory on film.film_id = inventory.film_id left JOIN view_rental_out on view_rental_out.inventory_id = inventory.inventory_id  WHERE film.film_id = ? AND view_rental_out.inventory_id IS NULL', [ filmID ], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
-        };
+            res.status(200).json(rows);
+        }
     });
 });
 
-//
-// Retourneer één specifieke todos. Hier maken we gebruik van URL parameters.
-// Vorm van de URL: http://hostname:3000/api/v1/todos/23
-//
-routes.get('/todos/:id', function(req, res) {
+//Geeft alle informatie terug van alle films, je kan een offset en een limit meesturen. Zonder deze mee te sturen wordt als standaard 0 voor de offset gedaan (dus begint bij de eerste te kijken) en 100 als als limit (dus dat je nite duizenden resultaten terugkrijgt)
 
-    var todosId = req.params.id;
+routes.get('/films', function (req, res) {
+    var offset = req.query.offset || 0;
+    var limit = req.query.count || 100;
 
-    res.contentType('application/json');
-
-    db.query('SELECT * FROM todos WHERE ID=?', [todosId], function(error, rows, fields) {
-        if (error) {
+    db.query('SELECT * FROM film LIMIT ' + limit + ' OFFSET ' + offset, function (error, rows, fields) {
+        if(error){
             res.status(401).json(error);
-        } else {
-            res.status(200).json({ result: rows });
-        };
-    });
-});
-
-//
-// Voeg een todo toe. De nieuwe info wordt gestuurd via de body van de request message.
-// Vorm van de URL: POST http://hostname:3000/api/v1/todos
-//
-routes.post('/todos', function(req, res) {
-
-    var todos = req.body;
-    var query = {
-        sql: 'INSERT INTO `todos`(`Titel`, `Beschrijving`) VALUES (?, ?)',
-        values: [todos.Titel, todos.Beschrijving],
-        timeout: 2000 // 2secs
-    };
-
-    console.dir(todos);
-    console.log('Onze query: ' + query.sql);
-
-    res.contentType('application/json');
-    db.query(query, function(error, rows, fields) {
-        if (error) {
-            res.status(401).json(error);
-        } else {
-            res.status(200).json({ result: rows });
-        };
-    });
-});
-
-//
-// Wijzig een bestaande todo. De nieuwe info wordt gestuurd via de body van de request message.
-// Er zijn twee manieren om de id van de todos mee te geven: via de request parameters (doen we hier)
-// of als property in de request body.
-// 
-// Vorm van de URL: PUT http://hostname:3000/api/v1/todos/23
-//
-routes.put('/todos/:id', function(req, res) {
-
-    var todos = req.body;
-    var ID = req.params.id;
-    var query = {
-        sql: 'UPDATE `todos` SET Title=? , Beschrijving=? WHERE ID=?',
-        values: [todos.Title, todos.Beschrijving, ID],
-        timeout: 2000 // 2secs
-    };
-
-    console.dir(todos);
-    console.log('Onze query: ' + query.sql);
-
-    res.contentType('application/json');
-    db.query(query, function(error, rows, fields) {
-        if (error) {
-            res.status(401).json(error);
-        } else {
-            res.status(200).json({ result: rows });
-        };
-    });
-});
-
-//
-// Verwijder een bestaande todo.
-// Er zijn twee manieren om de id van de todos mee te geven: via de request parameters (doen we hier)
-// of als property in de request body.
-// 
-// Vorm van de URL: DELETE http://hostname:3000/api/v1/todos/23
-//
-routes.delete('/todos/:id', function(req, res) {
-
-    var ID = req.params.id;
-    var query = {
-        sql: 'DELETE FROM `todos` WHERE ID=?',
-        values: [ID],
-        timeout: 2000 // 2secs
-    };
-
-    console.log('Onze query: ' + query.sql);
-
-    res.contentType('application/json');
-    db.query(query, function(error, rows, fields) {
-        if (error) {
-            res.status(401).json(error);
-        } else {
-            res.status(200).json({ result: rows });
-        };
-    });
+        }
+        else {
+            res.status(200).json(rows);
+        }
+    })
 });
 
 module.exports = routes;

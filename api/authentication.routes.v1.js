@@ -1,9 +1,3 @@
-//
-// ./api/authentication.routes.v1.js
-//
-//
-// ./api/routes_v2.js
-//
 var express = require('express');
 var router = express.Router();
 var db = require('../config/db');
@@ -43,17 +37,16 @@ router.post('/register', function(req, res){
     var lastname = req.body.lastname;
 
     if(username != '' || password != '' || firstname != '' || lastname !=''){
-       db.query("INSERT INTO `customer` (`customer_id`, `first_name`, `last_name`, `password`, `email`) VALUES (NULL, '" + firstname + "', '" + lastname +"', '"+ password +"', '"+ username +"');", function (error, result) {
+        db.query("INSERT INTO `customer` (`customer_id`, `first_name`, `last_name`, `password`, `email`) VALUES (NULL, '" + firstname + "', '" + lastname +"', '"+ password +"', '"+ username +"');", function (error, result) {
             if (error) {
                 res.status(400).json(error);
             } else {
                 res.status(200).json({
-                    "status": "geslaaagd",
+                    "status": "geslaagd"
                 });
             }
         })
     }
 });
-
 
 module.exports = router;
