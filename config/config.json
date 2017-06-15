@@ -1,7 +1,7 @@
 {
     "webPort": "3000",
-    "dbHost": "localhost",
-    "dbUser": "prog4",
-    "dbDatabase": "Prog4Tentamen",
+    "dbHost": "146.185.130.82",
+    "dbUser": "1045",
+    "dbDatabase": "1045",
     "secretkey": "secret"
 }
