@@ -21,12 +21,12 @@ app.use(expressJWT({
     path: [
         { url: '/api/v1/login', methods: ['POST'] },
         { url: '/api/v1/register', methods: ['POST'] },
-        { url: '/api/v1/films', methods: ['GET'] },
+        { url: '/api/v1/films', methods: ['GET'] }
     ]
 }));
 
 app.set('port', (process.env.PORT | config.webPort));
-app.set('env', (process.env.ENV | 'development'))
+app.set('env', (process.env.ENV | 'development'));
 
 app.use(logger('dev'));
 
@@ -34,20 +34,16 @@ app.use('/api/v1', auth_routes_v1);
 app.use('/api/v1', filmroutes_v1);
 app.use('/api/v1', rentalroutes_v1);
 
-// Errorhandler voor express-jwt errors
-// Wordt uitgevoerd wanneer err != null; anders door naar next().
 app.use(function(err, req, res, next) {
-    // console.dir(err);
     var error = {
         message: err.message,
         code: err.code,
         name: err.name,
         status: err.status
-    }
+    };
     res.status(401).send(error);
 });
 
-// Fallback - als geen enkele andere route slaagt wordt deze uitgevoerd.
 app.use('*', function(req, res) {
     res.status(400);
     res.json({

@@ -2,6 +2,8 @@ var express = require('express');
 var routes = express.Router();
 var db = require('../config/db');
 
+//Geeft alle rentals terug van de user
+
 routes.get('/rentals/:userid', function(req, res) {
     var userID = req.params.userid;
 
@@ -9,10 +11,12 @@ routes.get('/rentals/:userid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
+            res.status(200).json(rows);
         }
     });
 });
+
+//Maakt een nieuwe rental aan voor de user van de meegegeven inventory id
 
 routes.post('/rentals/:userid/:inventoryid', function(req, res) {
     var userID = req.params.userid;
@@ -23,10 +27,12 @@ routes.post('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
+            res.status(200).json(rows);
         }
     });
 });
+
+//Past de rental aan van de mmegegeven user en inventory id. De rental wordt hiermee gestopt, de return_date wordt op CURRENT_TIMESTAMP gezet.
 
 routes.put('/rentals/:userid/:inventoryid', function(req, res) {
     var customerId = req.params.userid;
@@ -37,10 +43,12 @@ routes.put('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
+            res.status(200).json(rows);
         }
     });
 });
+
+//Een rental wordt volledig verwijderd van de meegegeven user en inventory id.
 
 routes.delete('/rentals/:userid/:inventoryid', function(req, res) {
     var customerId = req.params.userid;
@@ -51,7 +59,7 @@ routes.delete('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json({ result: rows });
+            res.status(200).json(rows);
         }
     });
 });
