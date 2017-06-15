@@ -14,14 +14,16 @@ router.post('/login', function(req, res){
     var password = req.body.password;
 
     if(username != '' || password != ''){
-        db.query("SELECT COUNT(*) AS count FROM customer WHERE email = '" + username + "' AND password = '" + password + "'", function (error, result) {
+        db.query("SELECT COUNT(*) AS count, customer_id FROM customer WHERE email = '" + username + "' AND password = '" + password + "'", function (error, result) {
             if (error) {
                 res.status(400).json(error);
             } else {
                 if(result[0].count >= 1){
                     var token = auth.encodeToken(username);
+                    var id = result[0].customer_id;
                     res.status(200).json({
-                        "token": token
+                        "token": token,
+                        "id": id
                     });
                 }
                 else {
@@ -45,7 +47,9 @@ router.post('/register', function(req, res){
             if (error) {
                 res.status(400).json(error);
             } else {
-                res.status(200).json(result);
+                res.status(200).json({
+                    "status": "geslaaagd",
+                });
             }
         })
     }
