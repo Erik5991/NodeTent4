@@ -49,7 +49,6 @@ routes.put('/rentals/change/:id/:invID', function(req, res) {
         timeout: 2000 // 2secs
     };
 
-    console.dir(todos);
     console.log('Onze query: ' + query.sql);
 
     res.contentType('application/json');
@@ -83,7 +82,5 @@ routes.delete('/rentals/delete/:id', function(req, res) {
         };
     });
 });
-
-
 
 module.exports = routes;
