@@ -7,7 +7,7 @@ routes.get('/films/:id', function(req, res) {
 
     //Geeft de informatie van de film door en geeft alle alle inventory id's mee van de films de versies die nog niet uit zijn geleend
 
-    db.query('SELECT inventory.inventory_id, film.title, film.description, film.release_year, film.rental_duration, film.rental_rate, film.length, film.replacement_cost, film.rating, film.special_features FROM film INNER JOIN inventory on film.film_id = inventory.film_id WHERE film.film_id = ?', [ filmID ], function(error, rows, fields) {
+    db.query('SELECT inventory.inventory_id FROM film INNER JOIN inventory on film.film_id = inventory.film_id WHERE film.film_id = ?', [ filmID ], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
@@ -15,10 +15,18 @@ routes.get('/films/:id', function(req, res) {
                 if (error) {
                     res.status(401).json(error);
                 } else {
-                    res.status(200).json({
-                        "result": rows,
-                        "rentedout": rowsout
-                    });
+
+                    db.query('SELECT * FROM film WHERE film_id = ?', [ filmID ], function(error, result, fields) {
+                        if (error) {
+                            res.status(401).json(error);
+                        } else {
+                            res.status(200).json({
+                                "result": result,
+                                "allcopys": rows,
+                                "rentedout": rowsout
+                            });
+                        }
+                    })
                 }
             });
         }
