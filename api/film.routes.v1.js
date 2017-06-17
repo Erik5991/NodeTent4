@@ -27,7 +27,7 @@ routes.get('/films', function (req, res) {
             res.status(401).json(error);
         }
         else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": rows});
         }
     })
 });
