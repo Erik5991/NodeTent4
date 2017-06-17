@@ -21,15 +21,32 @@ routes.get('/films/:id', function(req, res) {
 routes.get('/films', function (req, res) {
     var offset = req.query.offset || 0;
     var limit = req.query.count || 100;
+    var titel = req.query.title || "";
 
-    db.query('SELECT * FROM film LIMIT ' + limit + ' OFFSET ' + offset, function (error, rows, fields) {
-        if(error){
-            res.status(401).json(error);
-        }
-        else {
-            res.status(200).json({"result": rows});
-        }
-    })
+    if (titel == "") {
+
+        db.query('SELECT * FROM film LIMIT ' + limit + ' OFFSET ' + offset, function (error, rows, fields) {
+            if (error) {
+                res.status(401).json(error);
+            }
+            else {
+                res.status(200).json({"result": rows});
+            }
+        })
+    }
+
+    else {
+        db.query('SELECT * FROM film WHERE title LIKE "%'+  titel +'%" LIMIT ' + limit + ' OFFSET ' + offset, function (error, rows, fields) {
+            if (error) {
+                res.status(401).json(error);
+            }
+            else {
+                res.status(200).json({"result": rows});
+            }
+        })
+    }
 });
+
+
 
 module.exports = routes;
