@@ -11,7 +11,7 @@ routes.get('/rentals/:userid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": rows});
         }
     });
 });
@@ -27,7 +27,7 @@ routes.post('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": rows});
         }
     });
 });
@@ -43,7 +43,7 @@ routes.put('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": rows});
         }
     });
 });
@@ -59,7 +59,7 @@ routes.delete('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": rows});
         }
     });
 });
