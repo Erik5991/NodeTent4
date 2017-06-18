@@ -7,7 +7,7 @@ var db = require('../config/db');
 routes.get('/rentals/:userid', function(req, res) {
     var userID = req.params.userid;
 
-    db.query('SELECT rental.rental_date, rental.inventory_id, film.title, film.rental_duration, film.rental_rate FROM rental INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE customer_id =?', [ userID ], function(error, rows, fields) {
+    db.query('SELECT rental.rental_date, rental.return_date, rental.inventory_id, film.title, film.rental_duration, film.rental_rate FROM rental INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE customer_id =?', [ userID ], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
