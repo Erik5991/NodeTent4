@@ -7,11 +7,11 @@ var db = require('../config/db');
 routes.get('/rentals/:userid', function(req, res) {
     var userID = req.params.userid;
 
-    db.query('SELECT * FROM rental WHERE customer_id =?', [ userID ], function(error, rows, fields) {
+    db.query('SELECT rental.rental_date, rental.return_date, rental.inventory_id, film.title, film.rental_duration, film.rental_rate FROM rental INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id INNER JOIN film ON film.film_id = inventory.film_id WHERE customer_id =?', [ userID ], function(error, rows, fields) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": rows});
         }
     });
 });
@@ -27,7 +27,7 @@ routes.post('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": "geslaagd"});
         }
     });
 });
@@ -43,7 +43,7 @@ routes.put('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": "geslaagd"});
         }
     });
 });
@@ -59,7 +59,7 @@ routes.delete('/rentals/:userid/:inventoryid', function(req, res) {
         if (error) {
             res.status(401).json(error);
         } else {
-            res.status(200).json(rows);
+            res.status(200).json({"result": "geslaagd"});
         }
     });
 });
